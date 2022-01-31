@@ -23,6 +23,9 @@ this.user=user
   async  googleLogin(){
    await   this.fireAuth.signInWithPopup(new firebase.auth.GoogleAuthProvider()).then((res:any)=>{
      console.log('login google',res.additionalUserInfo.profile.id);
+     if(res.additionalUserInfo.profile.id){
+      this.router.navigateByUrl('/canvas')
+     }
 localStorage.setItem('googleId',res.additionalUserInfo.profile.id)
    }).catch(err=>{
     console.error(err)

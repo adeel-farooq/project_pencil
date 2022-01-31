@@ -18,7 +18,7 @@ const routes: Routes = [
         data: {returnUrl: window.location.pathname}
       },
       {
-        path: 'login/canvas',
+        path: 'canvas',
         component: CanvasComponent,
         // data: {returnUrl: window.location.pathname}
       },
