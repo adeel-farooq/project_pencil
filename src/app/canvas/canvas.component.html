@@ -1,0 +1,9 @@
+<div
+  (dragover)="false"
+  (dragend)="false"
+  (drop)="handleDrop($event)">
+  <canvas id="myCanvas" #myCanvas class="canvas" width="100" height="100">
+  </canvas>
+</div>
+<button (click)="logout()">logout</button>
+<input type="file" (change)="img($event)" name="file" >
