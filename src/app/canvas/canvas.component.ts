@@ -76,8 +76,8 @@ path:any=String;
       }
 
       getClickCoords(event: any) {
-        console.log("aa");
-
+        console.log(document.getElementById('canvasID'));
+document.getElementById('canvasID')
         if (this.isCanvasDrawn && this.isImageDrawn) {
           this.newPt = {
             x: event.layerX,
