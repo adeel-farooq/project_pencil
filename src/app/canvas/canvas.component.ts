@@ -264,9 +264,9 @@ this.router.navigateByUrl('/login')
   }
   handleDrop(e:any) {
     // this.file = e.dataTransfer.files[0];
-    this. file = e.target.files[0];
+    this.file = e.target.files[0];
     const reader = new FileReader();
-
+  this.angularFireStorage.upload("/files"+Math.random(), this.file)
     reader.onload = (imgFile:any) => {
       console.log(imgFile);
       const data = imgFile.target["result"];
