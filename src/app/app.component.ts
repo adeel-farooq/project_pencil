@@ -19,7 +19,7 @@ export class AppComponent implements  OnInit{
     this.router.navigateByUrl('/canvas');
   }
   ngOnInit(){
-    this.router.navigateByUrl('/canvas');
+    this.router.navigateByUrl('/login');
 // this.canvas= new fabric.Canvas('canvas',{
 //   isDrawingMode:true,
 //   imageSmoothingEnabled:true,

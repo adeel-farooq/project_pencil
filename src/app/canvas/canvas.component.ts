@@ -15,8 +15,8 @@ export class CanvasComponent implements OnInit {
 path:any=String;
   uploadForm:any= FormGroup;
   file:any= File;
-  @ViewChild("myCanvas")
-  myCanvas!: ElementRef;
+  @ViewChild('myCanvas')
+  private myCanvas: ElementRef = {} as ElementRef;
    image = new Image();
 
 
@@ -24,18 +24,25 @@ path:any=String;
      private formBuilder: FormBuilder,
     private angularFireStorage:AngularFireStorage,
       private router: Router) { }
+      ngAfterViewInit() {
+        this.image.src = "https://firebasestorage.googleapis.com/v0/b/pencil-project-91946.appspot.com/o/files0.049403060846229474?alt=media&token=b5b511e0-dc63-45f6-9386-b660530de3aa";
+        // this.image.src = "https://picsum.photos/200/300";
+        let ctx: CanvasRenderingContext2D =
+          this.myCanvas.nativeElement.getContext('2d');
 
+         // showing
+
+      ctx.fillRect(20, 20, 150, 100);
+
+      // Not showing
+        this.image.onload = () => {
+        console.log("image has loaded!");
+         ctx.drawImage(this.image, 10, 10); }
+
+
+      }
   ngOnInit() {
-    this.image.src = "https://picsum.photos/200/300";
-    let ctx: CanvasRenderingContext2D =
-    this.myCanvas.nativeElement.getContext('2d');
 
-// showing
-ctx.beginPath();
-ctx.lineWidth = 5;
-ctx.strokeStyle = "red";
-ctx.rect(5, 5, 29, 14);
-ctx.stroke();
 
   //   this.image.src = "https://picsum.photos/200/300";
   //   let ctx: CanvasRenderingContext2D =
