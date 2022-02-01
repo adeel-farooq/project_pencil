@@ -4,7 +4,7 @@
   (drop)="handleDrop($event)"> -->
   <button (click)="logout()">logout</button><br />
   <h2>Create Editable  Image</h2>
-  <input type="file" id="file" (change)="selectFile($event)" />
+  <input type="file" id="file" (change)="handleDrop($event)" />
   <!-- <label for="file">Choose file</label> -->
   <!-- <p style="font-size: 0.8rem;">Right Click To Confirm Polygon</p>
   <button id="edit" (click)="Edit()" [disabled]="!isPolygonDrawn">

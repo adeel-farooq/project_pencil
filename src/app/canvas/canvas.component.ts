@@ -71,7 +71,7 @@ path:any=String;
               });
             });
           };
-          this.isImageDrawn = true;
+          // this.isImageDrawn = true;
         }
       }
 
@@ -262,29 +262,30 @@ this.router.navigateByUrl('/login')
     localStorage.clear()
     this.router.navigateByUrl('/login')
   }
-  // handleDrop(e:any) {
-  //   this.file = e.dataTransfer.files[0];
-  //   const reader = new FileReader();
+  handleDrop(e:any) {
+    // this.file = e.dataTransfer.files[0];
+    this. file = e.target.files[0];
+    const reader = new FileReader();
 
-  //   reader.onload = (imgFile:any) => {
-  //     console.log(imgFile);
-  //     const data = imgFile.target["result"];
-  //     fabric.Image.fromURL(data, (img) => {
-  //       let oImg = img.set({
-  //         left: 0,
-  //         top: 0,
-  //         angle: 0
-  //       }).scale(1);
-  //     this.canvas.add(oImg).renderAll();
-  //     var a = this.canvas.setActiveObject(oImg);
-  //     var dataURL = this.canvas.toDataURL({format: 'png', quality: 0.8});
-  //     console.log(dataURL);
+    reader.onload = (imgFile:any) => {
+      console.log(imgFile);
+      const data = imgFile.target["result"];
+      fabric.Image.fromURL(data, (img) => {
+        let oImg = img.set({
+          left: 0,
+          top: 0,
+          angle: 0
+        }).scale(1);
+      this.canvas.add(oImg).renderAll();
+      var a = this.canvas.setActiveObject(oImg);
+      var dataURL = this.canvas.toDataURL({format: 'png', quality: 0.8});
+      console.log(dataURL);
 
-  //     });
-  //   };
-  //   reader.readAsDataURL(this.file);
-  //   return false;
-  // }
+      });
+    };
+    reader.readAsDataURL(this.file);
+    return false;
+  }
 
 
 
