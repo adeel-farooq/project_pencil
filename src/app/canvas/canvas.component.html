@@ -2,8 +2,26 @@
   (dragover)="false"
   (dragend)="false"
   (drop)="handleDrop($event)"> -->
-  <canvas id="myCanvas" #myCanvas class="canvas" width="100" height="100">
-  </canvas>
+  <button (click)="logout()">logout</button><br />
+  <h2>Create Editable  Image</h2>
+  <input type="file" id="file" (change)="selectFile($event)" />
+  <!-- <label for="file">Choose file</label> -->
+  <!-- <p style="font-size: 0.8rem;">Right Click To Confirm Polygon</p>
+  <button id="edit" (click)="Edit()" [disabled]="!isPolygonDrawn">
+    Edit Polygon
+  </button> -->
+  <br />
+  <!-- <button id="copy" (click)="copyCoords()" >
+    Copy Coordinates
+  </button> -->
+  <hr />
+
+  <canvas
+    id="canvasID"
+    width="1280"
+    height="720"
+    style="border: 1px solid red"
+  ></canvas>
 <!-- </div> -->
-<button (click)="logout()">logout</button>
-<input type="file" (change)="img($event)" name="file" >
+
+<!-- <input type="file" (change)="img($event)" name="file" > -->
