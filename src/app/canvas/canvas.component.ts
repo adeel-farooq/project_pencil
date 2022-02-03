@@ -301,10 +301,10 @@ document.getElementById('canvas')
      this.image.src = this.canvas.toDataURL('png')
     //  console.log( ".................",this.image.src);
 
-      var w = window.open("");
-      w.document.write(this.image.outerHTML);
+      // var w = window.open("");
+      // w.document.write(this.image.outerHTML);
       // console.log(this.image.outerHTML);
-      let text = this.image.outerHTML;
+      let text = this.image.src;
       let arr = text.split(',');
 
       let arr1 = arr[1].split('">');
