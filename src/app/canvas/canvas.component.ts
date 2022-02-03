@@ -14,6 +14,13 @@ export class CanvasComponent implements OnInit,AfterViewInit {
   // image: any;
   myCanvas: any;
   image = new Image();
+   textString: string;
+   size: any = {
+      width: 1200,
+      height: 1000
+  };
+   OutputContent: string;
+
   url!: string;
   isCanvasDrawn: boolean = true;
   // canvas: any;
@@ -35,13 +42,18 @@ path:any=String;
     private angularFireStorage:AngularFireStorage,
       private router: Router) { }
       ngAfterViewInit() {
+        console.log("upppppp");
         this.canvas.on('mouse:up', (options:any) => {
+          console.log("up");
+this.ExportToContent('svg')
           if (options.button === 1) {
             this.getClickCoords(options.e);
           }
         });
 
         this.canvas.on('mouse:down', (event:any) => {
+          console.log("down");
+          // this.ExportToContent('svg')
           if (event.button === 3) {
             if (this.points.length < 4) {
               this.isPolygonDrawn = false;
@@ -76,8 +88,8 @@ path:any=String;
       }
 
       getClickCoords(event: any) {
-        console.log(document.getElementById('canvasID'));
-document.getElementById('canvasID')
+        // console.log(document.getElementById('canvasID'));
+document.getElementById('canvas')
         if (this.isCanvasDrawn && this.isImageDrawn) {
           this.newPt = {
             x: event.layerX,
@@ -209,22 +221,150 @@ document.getElementById('canvasID')
         poly.hasBorders = !poly.edit;
         this.canvas.requestRenderAll();
       }
-  ngOnInit() {
-    this.canvas = new fabric.Canvas('canvasID', { fireRightClick: true });
 
-    this.polygon = new fabric.Polygon(this.points, {
-      left: 0,
-      top: 0,
-      fill: 'rgba(255,0,0,0.1)',
-      strokeWidth: 1,
-      stroke: 'lightgrey',
-      scaleX: 1,
-      scaleY: 1,
-      objectCaching: false,
-      transparentCorners: false,
-      cornerColor: 'blue'
+  addText() {
+    console.log('here');
+
+    let textString = this.textString;
+    let text = new fabric.IText(textString, {
+      left: 10,
+      top: 10,
+      fontFamily: 'helvetica',
+      angle: 0,
+      fill: '#000000',
+      scaleX: 0.5,
+      scaleY: 0.5,
+      fontWeight: '',
+      hasRotatingPoint: true
     });
-    this.canvas.viewportTransform = [1, 0, 0, 1, 0, 0];
+    this.extend(text, this.randomId());
+    this.canvas.add(text);
+    this.selectItemAfterAdded(text);
+    console.log('here',text);
+    this.textString = '';
+  }
+
+  extend(obj, id) {
+    obj.toObject = (function (toObject) {
+      return function () {
+        return fabric.util.object.extend(toObject.call(this), {
+          id: id
+        });
+      };
+    })(obj.toObject);
+  }
+
+  randomId() {
+    return Math.floor(Math.random() * 999999) + 1;
+  }
+
+  selectItemAfterAdded(obj) {
+    this.canvas.discardActiveObject().renderAll();
+    this.canvas.setActiveObject(obj);
+  }
+
+  addFigure(figure) {
+    let add: any;
+    switch (figure) {
+      case 'rectangle':
+        add = new fabric.Rect({
+          width: 200, height: 100, left: 10, top: 10, angle: 0,
+          fill: '#3f51b5'
+        });
+        break;
+      case 'square':
+        add = new fabric.Rect({
+          width: 100, height: 100, left: 10, top: 10, angle: 0,
+          fill: '#4caf50'
+        });
+        break;
+      case 'triangle':
+        add = new fabric.Triangle({
+          width: 100, height: 100, left: 10, top: 10, fill: '#2196f3'
+        });
+        break;
+      case 'circle':
+        add = new fabric.Circle({
+          radius: 50, left: 10, top: 10, fill: '#ff5722'
+        });
+        break;
+    }
+    this.extend(add, this.randomId());
+    this.canvas.add(add);
+    this.selectItemAfterAdded(add);
+  }
+
+  ExportToContent(input) {
+    if(input == 'json'){
+      this.OutputContent = JSON.stringify(this.canvas);
+    }else if(input == 'svg'){
+     this.image.src = this.canvas.toDataURL('png')
+    //  console.log( ".................",this.image.src);
+
+      var w = window.open("");
+      w.document.write(this.image.outerHTML);
+      // console.log(this.image.outerHTML);
+      let text = this.image.outerHTML;
+      let arr = text.split(',');
+
+      let arr1 = arr[1].split('">');
+
+      console.log(arr1[0]);
+      // var pic=`data${arr1[0]}`
+ var pic=  this.base64toBlob(arr1[0],'image/png')
+ console.log(pic);
+
+     var url= this.angularFireStorage.upload("/files"+Math.random(),pic)
+
+
+
+    //  this.OutputContent = this.canvas.toSVG();
+    }
+  }
+  base64toBlob(base64Data, contentType) {
+    contentType = contentType || '';
+    var sliceSize = 1024;
+    var byteCharacters = atob(base64Data);
+    var bytesLength = byteCharacters.length;
+    var slicesCount = Math.ceil(bytesLength / sliceSize);
+    var byteArrays = new Array(slicesCount);
+
+    for (var sliceIndex = 0; sliceIndex < slicesCount; ++sliceIndex) {
+        var begin = sliceIndex * sliceSize;
+        var end = Math.min(begin + sliceSize, bytesLength);
+
+        var bytes = new Array(end - begin);
+        for (var offset = begin, i = 0 ; offset < end; ++i, ++offset) {
+            bytes[i] = byteCharacters[offset].charCodeAt(0);
+        }
+        byteArrays[sliceIndex] = new Uint8Array(bytes);
+    }
+    return new Blob(byteArrays, { type: contentType });
+}
+  ngOnInit() {
+    // this.canvas = new fabric.Canvas('canvasID', { fireRightClick: true });
+    this.canvas = new fabric.Canvas('canvas', {
+      hoverCursor: 'pointer',
+      selection: true,
+      selectionBorderColor: 'blue'
+    });
+    this.textString = null;
+    this.canvas.setWidth(this.size.width);
+    this.canvas.setHeight(this.size.height);
+    this.OutputContent = null;
+    // this.polygon = new fabric.Polygon(this.points, {
+    //   left: 0,
+    //   top: 0,
+    //   fill: 'rgba(255,0,0,0.1)',
+    //   strokeWidth: 1,
+    //   stroke: 'lightgrey',
+    //   scaleX: 1,
+    //   scaleY: 1,
+    //   objectCaching: false,
+    //   transparentCorners: false,
+    //   cornerColor: 'blue'
+    // });
+    // this.canvas.viewportTransform = [1, 0, 0, 1, 0, 0];
 
   //   this.image.src = "https://picsum.photos/200/300";
   //   let ctx: CanvasRenderingContext2D =
@@ -266,9 +406,10 @@ this.router.navigateByUrl('/login')
     // this.file = e.dataTransfer.files[0];
     this.file = e.target.files[0];
     const reader = new FileReader();
-  this.angularFireStorage.upload("/files"+Math.random(), this.file)
+    // console.log("imgFileimgFileimgFileimgFileimgFileimgFile", this.file);
+  // this.angularFireStorage.upload("/files"+Math.random(), this.file)
     reader.onload = (imgFile:any) => {
-      console.log(imgFile);
+
       const data = imgFile.target["result"];
       fabric.Image.fromURL(data, (img) => {
         let oImg = img.set({
@@ -284,10 +425,30 @@ this.router.navigateByUrl('/login')
       });
     };
     reader.readAsDataURL(this.file);
+    // this.save()
     return false;
   }
+  save(){
+    window.open(this.canvas.toDataURL('png'));
+   }
+imageClick(){
+  console.log("download");
 
+  document.getElementById('canvasID').addEventListener("click", function(e) {
+    let canvas = <HTMLCanvasElement> document.getElementById('canvasID');
 
+  var dataURL = canvas.toDataURL("image/jpeg", 1.0);
+
+  downloadImage(dataURL, 'my-canvas.jpeg');
+});
+function downloadImage(data, filename = 'untitled.jpeg') {
+  var a = document.createElement('a');
+  a.href = data;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+}
+}
 
 
 

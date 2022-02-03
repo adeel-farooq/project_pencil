@@ -3,25 +3,42 @@
   (dragend)="false"
   (drop)="handleDrop($event)"> -->
   <button (click)="logout()">logout</button><br />
-
-  <input type="file" id="file" (change)="handleDrop($event)" />
-  <!-- <label for="file">Choose file</label> -->
+<!-- <label for="file">Choose file</label> -->
   <!-- <p style="font-size: 0.8rem;">Right Click To Confirm Polygon</p>
   <button id="edit" (click)="Edit()" [disabled]="!isPolygonDrawn">
     Edit Polygon
   </button> -->
-  <br />
-  <!-- <button id="copy" (click)="copyCoords()" >
+   <!-- <button id="copy" (click)="copyCoords()" >
     Copy Coordinates
   </button> -->
-  <hr />
+  <input type="file" id="file" (change)="handleDrop($event)" />
 
-  <canvas
+  <br />
+
+  <hr />
+  <!-- <img src="//i.imgur.com/SHo6Fub.jpg" width="300" height="234"> -->
+  <!-- <canvas
     id="canvasID"
     width="720"
     height="480"
     style="border: 1px solid red"
-  ></canvas>
+
+  ></canvas> -->
+  <input type="text" [(ngModel)]="textString"/><button (click)="addText()">Add</button>
+
+<button (click)="addFigure('triangle')">Triangle</button>
+<button (click)="addFigure('circle')">Circle</button>
+<button (click)="addFigure('square')">Square</button>
+<button (click)="addFigure('rectangle')">Rectangle</button>
+<button (click)="ExportToContent('json')">Generate Json</button>
+<button (click)="ExportToContent('svg')">Generate SVG</button>
+<br/>
+<code>{{OutputContent}}</code>
+<canvas id="canvas"></canvas>
+
+<router-outlet></router-outlet>
+
+  <!-- <button  (click)="imageClick()">download</button> -->
 <!-- </div> -->
 
 <!-- <input type="file" (change)="img($event)" name="file" > -->
