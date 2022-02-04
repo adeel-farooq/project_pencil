@@ -312,9 +312,10 @@ document.getElementById('canvas')
       console.log(arr1[0]);
       // var pic=`data${arr1[0]}`
  var pic=  this.base64toBlob(arr1[0],'image/png')
- console.log(pic);
+//  console.log(pic);
 
      var url= this.angularFireStorage.upload("/files"+Math.random(),pic)
+console.log("urllll",url);
 
 
 
@@ -352,40 +353,22 @@ document.getElementById('canvas')
     this.canvas.setWidth(this.size.width);
     this.canvas.setHeight(this.size.height);
     this.OutputContent = null;
-    // this.polygon = new fabric.Polygon(this.points, {
-    //   left: 0,
-    //   top: 0,
-    //   fill: 'rgba(255,0,0,0.1)',
-    //   strokeWidth: 1,
-    //   stroke: 'lightgrey',
-    //   scaleX: 1,
-    //   scaleY: 1,
-    //   objectCaching: false,
-    //   transparentCorners: false,
-    //   cornerColor: 'blue'
-    // });
-    // this.canvas.viewportTransform = [1, 0, 0, 1, 0, 0];
+   var imageGet= localStorage.getItem('image')
+   console.log('.................',imageGet);
 
-  //   this.image.src = "https://picsum.photos/200/300";
-  //   let ctx: CanvasRenderingContext2D =
-  //     this.myCanvas.nativeElement.getContext('2d');
+   if(imageGet){
+console.log("here");
 
-  //    // showing
-
-  // ctx.fillRect(20, 20, 150, 100);
-
-  // // Not showing
-  //   this.image.onload = () => {
-  //   console.log("image has loaded!");
-  //    ctx.drawImage(this.image, 100, 100); }
-    // this.uploadForm = this.formBuilder.group({
-    //   file: [''],
-    // });
-    if (!localStorage.getItem('googleId')) {
+ var pic=  this.base64toBlob(imageGet,'image/png')
+   this.reload(pic)
+   }else{
+    console.log("else");
+   }
+       if (!localStorage.getItem('googleId')) {
       console.log('here');
 this.router.navigateByUrl('/login')
     }
-    // this.canvas = new fabric.Canvas('canvas', { selection: true });
+
   }
   img(event:any){
     console.log(event.target.files.length);
@@ -402,9 +385,16 @@ this.router.navigateByUrl('/login')
     localStorage.clear()
     this.router.navigateByUrl('/login')
   }
+  clearCanvas(){
+    localStorage.removeItem("image")
+    this.ngOnInit()
+  }
   handleDrop(e:any) {
+
     // this.file = e.dataTransfer.files[0];
-    this.file = e.target.files[0];
+
+
+    this.file=e.target.files[0]
     const reader = new FileReader();
     // console.log("imgFileimgFileimgFileimgFileimgFileimgFile", this.file);
   // this.angularFireStorage.upload("/files"+Math.random(), this.file)
@@ -420,7 +410,53 @@ this.router.navigateByUrl('/login')
       this.canvas.add(oImg).renderAll();
       var a = this.canvas.setActiveObject(oImg);
       var dataURL = this.canvas.toDataURL({format: 'png', quality: 0.8});
-      console.log(dataURL);
+      // console.log(dataURL);
+      let text = dataURL;
+      let arr = text.split(',');
+
+      let arr1 = arr[1].split('">');
+
+      // console.log(arr1[0]);
+      // var pic=`data${arr1[0]}`
+      localStorage.setItem('image',arr1)
+
+      });
+    };
+    reader.readAsDataURL(this.file);
+    // this.save()
+    return false;
+  }
+  reload(e:any) {
+    // this.file = e.dataTransfer.files[0];
+    console.log(e);
+
+
+  this.file=e
+
+    const reader = new FileReader();
+    // console.log("imgFileimgFileimgFileimgFileimgFileimgFile", this.file);
+  // this.angularFireStorage.upload("/files"+Math.random(), this.file)
+    reader.onload = (imgFile:any) => {
+
+      const data = imgFile.target["result"];
+      fabric.Image.fromURL(data, (img) => {
+        let oImg = img.set({
+          left: 0,
+          top: 0,
+          angle: 0
+        }).scale(1);
+      this.canvas.add(oImg).renderAll();
+      var a = this.canvas.setActiveObject(oImg);
+      var dataURL = this.canvas.toDataURL({format: 'png', quality: 0.8});
+      // console.log(dataURL);
+      let text = dataURL;
+      let arr = text.split(',');
+
+      let arr1 = arr[1].split('">');
+
+      // console.log(arr1[0]);
+      // var pic=`data${arr1[0]}`
+      localStorage.setItem('image',arr1)
 
       });
     };

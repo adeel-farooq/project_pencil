@@ -11,7 +11,7 @@
    <!-- <button id="copy" (click)="copyCoords()" >
     Copy Coordinates
   </button> -->
-  <input type="file" id="file" (change)="handleDrop($event)" />
+  <input type="file" id="file" (click)="clearCanvas()"  (change)="handleDrop($event)" />
 
   <br />
 
@@ -30,8 +30,8 @@
 <button (click)="addFigure('circle')">Circle</button>
 <button (click)="addFigure('square')">Square</button>
 <button (click)="addFigure('rectangle')">Rectangle</button>
-<button (click)="ExportToContent('json')">Generate Json</button>
-<button (click)="ExportToContent('svg')">Generate SVG</button>
+<!-- <button (click)="ExportToContent('json')">Generate Json</button>
+<button (click)="ExportToContent('svg')">Generate SVG</button> -->
 <br/>
 <code>{{OutputContent}}</code>
 <canvas id="canvas"></canvas>
