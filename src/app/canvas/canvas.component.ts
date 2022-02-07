@@ -42,9 +42,9 @@ path:any=String;
     private angularFireStorage:AngularFireStorage,
       private router: Router) { }
       ngAfterViewInit() {
-        console.log("upppppp");
+        // console.log("upppppp");
         this.canvas.on('mouse:up', (options:any) => {
-          console.log("up");
+          // console.log("up");
 this.ExportToContent('svg')
           if (options.button === 1) {
             this.getClickCoords(options.e);
@@ -52,7 +52,7 @@ this.ExportToContent('svg')
         });
 
         this.canvas.on('mouse:down', (event:any) => {
-          console.log("down");
+          // console.log("down");
           // this.ExportToContent('svg')
           if (event.button === 3) {
             if (this.points.length < 4) {
@@ -309,13 +309,13 @@ document.getElementById('canvas')
 
       let arr1 = arr[1].split('">');
 
-      console.log(arr1[0]);
+      // console.log(arr1[0]);
       // var pic=`data${arr1[0]}`
  var pic=  this.base64toBlob(arr1[0],'image/png')
 //  console.log(pic);
 
      var url= this.angularFireStorage.upload("/files"+Math.random(),pic)
-console.log("urllll",url);
+// console.log("urllll",url);
 
 
 
@@ -354,10 +354,10 @@ console.log("urllll",url);
     this.canvas.setHeight(this.size.height);
     this.OutputContent = null;
    var imageGet= localStorage.getItem('image')
-   console.log('.................',imageGet);
+  //  console.log('.................',imageGet);
 
    if(imageGet){
-console.log("here");
+// console.log("here");
 
  var pic=  this.base64toBlob(imageGet,'image/png')
    this.reload(pic)
@@ -365,7 +365,7 @@ console.log("here");
     console.log("else");
    }
        if (!localStorage.getItem('googleId')) {
-      console.log('here');
+      // console.log('here');
 this.router.navigateByUrl('/login')
     }
 
@@ -419,6 +419,7 @@ this.router.navigateByUrl('/login')
       // console.log(arr1[0]);
       // var pic=`data${arr1[0]}`
       localStorage.setItem('image',arr1)
+      window.location.reload();
 
       });
     };
